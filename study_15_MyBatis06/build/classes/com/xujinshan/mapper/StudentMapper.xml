@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xujinshan.mapper.StudentMapper">
+	<resultMap type="student" id="stuMap">
+		<id column="id" property="id"/>
+		<result column="name" property="name"/>
+		<result column="age" property="age"/>
+		<result column="tid" property="tid"/>
+		<!-- 如果关联一个对象 -->
+		<association property="teacher" select="com.xujinshan.mapper.TeacherMapper.selById" column="tid"></association>
+	</resultMap>
+	<select id="selAll" resultMap="stuMap">
+		select * from student
+	</select>
+	
+	<select id="selAll2" resultType="Student">
+		select t.id `teacher.id`,t.name `teacher.name`,s.id id,s.name name,age,tid
+		 from student s LEFT JOIN teacher t on t.id=s.tid
+	</select>
+</mapper>

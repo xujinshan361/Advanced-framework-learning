@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="peo" class="com.xujinshan.pojo.People">
+		<property name="id" value="222"></property>
+		<property name="name" value="张三"></property>
+		<property name="sets">
+			<set>
+				<value>1</value>
+				<value>2</value>
+				<value>3</value>
+			</set>
+		</property>
+		<property name="list">
+			<list>
+				<value>1</value>
+				<value>2</value>
+				<value>3</value>
+			</list>
+		</property>
+		<property name="strs">
+			<array>
+				<value>1</value>
+				<value>2</value>
+				<value>3</value>
+			</array>
+		</property>
+		<property name="map">
+			<map>
+				<entry key="a" value="b"></entry>
+				<entry key="c" value="d"></entry>
+			</map>
+		</property>
+		<property name="desk" ref="desk"></property>
+	</bean>
+	<bean id="desk" class="com.xujinshan.pojo.Desk">
+		<property name="id" value="12"></property>	
+		<property name="price" value="20"></property>
+	</bean>
+	
+</beans>

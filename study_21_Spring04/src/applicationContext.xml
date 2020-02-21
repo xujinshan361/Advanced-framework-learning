@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+<!--      
+     // 配置通知类对象，在切面中引入    
+    <bean id="myBefore" class="com.xujinshan.advice.MyBeforeAdvice"></bean>
+    <bean id="myAfter" class="com.xujinshan.advice.MyAfterAdvice"></bean>
+    	配置切面
+	<aop:config>
+		配置切点
+		<aop:pointcut expression="execution(* com.xujinshan.test.*.*(..))" id="mypoint"/>
+		通知
+		<aop:advisor advice-ref="myBefore" pointcut-ref="mypoint"/>
+		<aop:advisor advice-ref="myAfter" pointcut-ref="mypoint"/>
+		<aop:aspect>
+		
+		</aop:aspect>
+	</aop:config>	
+	配置Demo类，测试 使用
+	<bean id="demo" class="com.xujinshan.test.Demo"></bean>
+	<bean id="demo1" class="com.xujinshan.test.Demo1"></bean>
+	
+ -->
+ 	<bean id="demo" class="com.xujinshan.test.Demo"></bean>
+ 	<bean id="mythrow" class="com.xujinshan.advice.MyThrowAdvice"></bean>	
+ 	<aop:config>
+ 		<aop:aspect ref="mythrow">
+ 			<aop:pointcut expression="execution(* com.xujinshan.test.Demo.demo1())" id="mypoint"/>
+ 			<aop:after-throwing method="myexecption" pointcut-ref="mypoint" throwing="e"/>
+ 			
+ 		</aop:aspect>
+ 	</aop:config>
+</beans>
+

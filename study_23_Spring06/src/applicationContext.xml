@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+    <!-- 异常通知    
+        <bean id="mythrow" class="com.xujinshan.advice.MyThrow"></bean>
+        <bean id="demo" class="com.xujinshan.test.Demo"></bean>
+	<aop:config>
+		<aop:pointcut expression="execution(* com.xujinshan.test.Demo.demo1())" id="mypoint"/>
+		<aop:advisor advice-ref="mythrow" pointcut-ref="mypoint"/>
+		<aop:aspect ref="mythrow">
+			<aop:pointcut expression="execution(* com.xujinshan.test.Demo.demo1())" id="mypoint"/>
+			<aop:after-throwing method="afterThrowing" throwing="ex" pointcut-ref="mypoint"/>
+		</aop:aspect>
+	</aop:config> -->
+	<!-- 配置环绕通知 
+	<bean id="myarround" class="com.xujinshan.advice.MyArround"></bean>
+	 <bean id="demo" class="com.xujinshan.test.Demo"></bean>
+	<aop:config>
+		<aop:pointcut expression="execution(* com.xujinshan.test.Demo.demo1())" id="mypoint"/>
+		<aop:advisor advice-ref="myarround" pointcut-ref="mypoint"/>
+	</aop:config>
+	-->
+	<!--  所有通知用一个类写
+	<bean id="demo" class="com.xujinshan.test.Demo"></bean>
+	<bean id="myadvice" class="com.xujinshan.advice.MyAdvice"></bean>
+	<aop:config>
+		<aop:aspect ref="myadvice">
+			<aop:pointcut expression="execution(* com.xujinshan.test.Demo.demo1())" id="mypoint"/>
+			<aop:before method="myBefore" pointcut-ref="mypoint"/>
+			<aop:after method="myAfter" pointcut-ref="mypoint"/>
+			<aop:after-returning method="myAfterReturning" pointcut-ref="mypoint"/>
+			<aop:after-throwing method="myThrowing" pointcut-ref="mypoint"/>
+			<aop:around method="myArround" pointcut-ref="mypoint"/>
+		</aop:aspect>
+	</aop:config>   
+	-->
+	<bean id="demo" class="com.xujinshan.test.Demo"></bean>
+	<bean id="myadvice" class="com.xujinshan.advice.MyAdvice"></bean>
+	<aop:config>
+		<aop:aspect ref="myadvice">
+			<aop:pointcut expression="execution(* com.xujinshan.test.Demo.demo(String,int)) and args(name,age)" id="mypoint"/>
+			<aop:pointcut expression="execution(* com.xujinshan.test.Demo.demo1(String)) and args(name)" id="mypoint1"/>
+			<aop:before method="myBefore" pointcut-ref="mypoint" arg-names="name,age"/>
+			<aop:before method="myBefore1" pointcut-ref="mypoint1" arg-names="name"/>
+		</aop:aspect>
+	</aop:config>
+</beans>
+

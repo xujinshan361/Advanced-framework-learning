@@ -22,7 +22,6 @@
 	配置Demo类，测试 使用
 	<bean id="demo" class="com.xujinshan.test.Demo"></bean>
 	<bean id="demo1" class="com.xujinshan.test.Demo1"></bean>
-	
  -->
  	<bean id="demo" class="com.xujinshan.test.Demo"></bean>
  	<bean id="mythrow" class="com.xujinshan.advice.MyThrowAdvice"></bean>	

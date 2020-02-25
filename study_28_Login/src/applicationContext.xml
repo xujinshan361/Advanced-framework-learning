@@ -5,10 +5,8 @@
     xmlns:context="http://www.springframework.org/schema/context"
     xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
-                http://www.springframework.org/schema/aop
-        http://www.springframework.org/schema/aop/spring-aop.xsd
-         http://www.springframework.org/schema/context
-        http://www.springframework.org/schema/context/spring-context.xsd" default-autowire="byName">
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd" default-autowire="byName">
     <context:property-placeholder location="classpath:db.properties,classpath:second.properties"/>
     <!-- 扫描注解 -->
     <context:component-scan base-package="com.xujinshan.service.impl"></context:component-scan>
@@ -30,12 +28,10 @@
     	<!-- <property name="sqlSessionFactory" ref="factory"></property> -->
     	<property name="sqlSessionFactoryBeanName" value="factory"></property>
     </bean>
-    
     <!-- 注入 -->
     <bean id="usersService" class="com.xujinshan.service.impl.UsersServiceImpl">
     	<property name="usersMapper" ref="usersMapper"></property>
     </bean>
-    
     <!-- aop -->
     <aop:aspectj-autoproxy proxy-target-class="true"></aop:aspectj-autoproxy>
     <bean id="mybefore" class="com.xujinshan.advice.MyBefore"></bean>

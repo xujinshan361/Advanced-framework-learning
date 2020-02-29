@@ -18,7 +18,6 @@ public class MyBatisUtil {
 			InputStream is = Resources.getResourceAsStream("mybatis.xml");
 			factory = new SqlSessionFactoryBuilder().build(is);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

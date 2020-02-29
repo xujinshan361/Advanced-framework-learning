@@ -6,12 +6,10 @@
     xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
-        
     <context:component-scan base-package="com.xujinshan.advice,com.xujinshan.test"></context:component-scan>
     <!-- proxy-target-class 
     	true: 使用cglib动态代理
-    	false：使用jdk动态代理
-     -->
+    	false：使用jdk动态代理-->
     <aop:aspectj-autoproxy proxy-target-class="true"></aop:aspectj-autoproxy>
 	<bean id="demo" class="com.xujinshan.test.Demo"></bean>
 	<bean id="myadvice" class="com.xujinshan.advice.MyAdvice"></bean>

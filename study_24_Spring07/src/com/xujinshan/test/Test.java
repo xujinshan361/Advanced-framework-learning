@@ -34,7 +34,6 @@ public class Test {
 		try {
 			demo.demo();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 //			e.printStackTrace();
 		}
 	}

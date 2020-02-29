@@ -7,7 +7,6 @@ public class UsersServiceImpl implements UsersService{
 
 	@Override
 	public int insert(Users users) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 	@Override

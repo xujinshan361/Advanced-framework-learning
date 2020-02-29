@@ -1,127 +1,89 @@
 package com.xujinshan.controller;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.List;
+import java.util.Map;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
-import com.xujinshan.pojo.Demo;
-import com.xujinshan.pojo.Demo02;
-import com.xujinshan.pojo.People;
-
+/**
+ * JSP九大内置对象和四大作用域
+ * 		九大内置对象
+ * 		名称			类型						含义					获取方式
+ * 		request		HttpServletRequest		封装所有请求信息			方法参数
+ * 		response	HttpServletResponse		封装响应信息			方法参数
+ * 		session		HttpSession				封装所有会话信息			req.getSession()
+ * 		application ServletContext			所有信息				getServletContext() / request.getServletContext()
+ * 		out			PrintWriter 			输出对象				response.getWriter()
+ * 		exception	Exception				异常对象				
+ * 		page 		Object					当前页面对象			
+ * 		pageContext PageContext				获取其他对象
+ * 		config		ServletConfig			配置信息
+ * 
+ * 		四大作用域
+ * 		page
+ * 			在当前页面不会重新实例化
+ * 		request
+ * 			在一次请求中同一个对象，下次请求重新实例化一个request对象
+ * 		session
+ * 			一次会话
+ * 			只要客户端Cookie 中传递的Jsessionid 不变，session不会重新实例化(不超过默认时间)
+ * 			实际有效时间
+ * 				浏览器关闭，Cookie失效
+ * 				默认时间，在时间范围内无任何交互，在Tomcat的web.xml中配置
+ * 		application 
+ * 			只有在Tomcat启动项目时才实例化，关闭Tomcat是销毁application
+ * 	
+ * 
+ * SpringMVC 作用域传值的几种方式
+ * 		使用原生servlet
+ * 			在HandlerMethod 参数中添加作用域对象
+ * 		使用Map集合
+ * 			把map内容放在request作用域中
+ * 			spring会对map集合通过BindingAwareModelMap进行实例化
+ * 		使用SpringMVC中Model接口
+ * 			把内容最终放入到request作用域中	
+ * 		使用SpringMVC中ModelAndView 类
+ * @author xujinshan361@163.com
+ *
+ */
 @Controller
 public class DemoController {
-
-	@RequestMapping("demo")
-	// 只要写，SpringMVC能获取到值，就会赋值到这，
-	public String demo(People peo,String name, int age,HttpServletRequest req) {
-		System.out.println("执行demo"+peo+"  " + name +" " +age);
-		req.setAttribute("demo", "测试");
-		return "main.jsp";
+	@RequestMapping("demo1")
+	public String demo(HttpServletRequest req, HttpSession sessionParam) {
+		// request作用域
+		req.setAttribute("req", "req的值");
+		// session作用域
+		HttpSession session = req.getSession();
+		session.setAttribute("session", "session的值");
+		sessionParam.setAttribute("sessionParam", "sessionParam的值");
+		// application 作用域
+		ServletContext application = req.getServletContext();  
+		application.setAttribute("application", "application 的值");
+		return "/index";   // 建议写全路径
 	}
-//	@RequestMapping("demo")
-//	// 参数名不匹配时候使用
-//	public String demo(@RequestParam(value="name1")String name, @RequestParam(value="age1")int age) {
-//		System.out.println("demo");
-//		return null;
-//	}
+	
 	@RequestMapping("demo2")
-	public String demo2() {
-		System.out.println("执行demo2");
-		return "main1.jsp";
+	public String demo2(Map<String, Object> map) {
+		System.out.println(map.getClass());
+		map.put("map", "map的值");
+		return "index";
 	}
-//	@RequestMapping("page")
-//	public String page(Integer pageSize, Integer pageNumber) {
-//		System.out.println(pageSize+"  "+ pageNumber);
-//		return "main.jsp";
-//	}
-	
-	@RequestMapping("page")
-	public String page(@RequestParam(defaultValue = "2") int pageSize, @RequestParam(defaultValue = "1")int pageNumber) {
-		System.out.println(pageSize+"  "+ pageNumber);
-		return "main.jsp";
+	@RequestMapping("demo3")
+	public String demo2(Model model) {
+		model.addAttribute("model", "model 的值");
+		return "/index";
 	}
-	@RequestMapping("demo02")
-	//没有值会将null赋值给name,required = true 如果没有传参数会报异常
-	public String demo02(@RequestParam(required = true)String name) {
-		System.out.println("name 是SQL的查询条件，必须要传递name参数"+name);
-		return "main.jsp";
-	}
-	
-	@RequestMapping("demo03")
-	// defaultValue 和 required 不要一起使用，required没意义
-	public String demo03(@RequestParam(required = true,defaultValue = "测试")String name) {
-		System.out.println("demo03");
-		return "main.jsp";
-	}
-	@RequestMapping("demo05")
-	// 复选框传递参数
-	public String demo05(String name, int age, @RequestParam("hover") List<String> abc) {
-		System.out.println(name+"  " + age + "  " +abc);
-		return "main.jsp";
-	}
-	
-	@RequestMapping("demo06")
-	public String demo06(Demo demo) {
-		System.out.println(demo);
-		return "main.jsp";
-	}
-	
-	@RequestMapping("demo07")
-	public String demo07(Demo02 demo) {
-		System.out.println(demo);
-		return "main.jsp";
-	}
-	@RequestMapping("demo08")
-	public String demo08(String name, int age) {
-		System.out.println(name+"  "+age);
-		return "main.jsp";
-	}
-	
-	@RequestMapping("demo09/{id1}/{name1}")
-	// 正常起一样的参数名
-	public String demo09(@PathVariable(value = "name1") String name, @PathVariable("id1") int age) {
-		System.out.println(name + "  " + age);
-		// 请求格式路径变化了，所有采用全路径
-		return "/main.jsp";
-	}
-	@RequestMapping("demo10")
-	public String demo10() {
-		System.out.println("转发");
-		return "/main.jsp";  // 省略forward:
-	}
-	
-	@RequestMapping("demo11")
-	public String demo11() {
-		System.out.println("重定向");
-		return "redirect:/main.jsp";
-	}
-	
-	
-	// 自定义视图解析器测试
-	@RequestMapping("demo12")
-	public String demo12() {
-		return  "forward:demo13";   // 加前缀forward，走Spring默认解析器
-	}
-	@RequestMapping("demo13")
-	public String demo13() {
-		return "main";    // 视图解析器里面添加后缀.jsp ,会调到main.jsp 
-	}
-	
-	@RequestMapping(value = "demo14",produces = "text/html;charset=utf-8")
-	@ResponseBody()
-	public People demo14(HttpServletResponse resp) throws IOException {
-		People p = new People();
-		p.setAge(12);
-		p.setName("张三");
-		return p;
+	@RequestMapping("demo4")
+	public ModelAndView demo4() {
+		// 参数表示跳转视图
+		ModelAndView mav = new ModelAndView("/index");
+		mav.addObject("mav", "mav的值");
+		return mav;
 	}
 }
